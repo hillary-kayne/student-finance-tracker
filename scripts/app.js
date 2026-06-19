@@ -20,14 +20,6 @@ function refresh() {
   renderCategoryList(state.categories);
 }
 
-refresh();
-
-// Load saved budget into input on page load
-const savedBudget = state.budget;
-if (savedBudget) {
-  document.getElementById('budget-cap').value = savedBudget;
-}
-
 // ── Nav toggle (mobile) ─────────────────────────────────
 const header = document.querySelector('.site-header');
 const navToggle = document.querySelector('.nav-toggle');
@@ -132,3 +124,11 @@ document.addEventListener('keydown', e => {
     }
   }
 });
+// ── Initial render ───────────────────────────────────────
+refresh();
+
+// Load saved budget into input on page load
+const savedBudget = state.budget;
+if (savedBudget) {
+  document.getElementById('budget-cap').value = savedBudget;
+}                                                
