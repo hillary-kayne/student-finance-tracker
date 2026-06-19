@@ -3,14 +3,13 @@
 A simple, accessible budget tracker built for ALU students.
 Track your spending, set a monthly budget, and stay in control of your money.
 
-**Live site:** https://hillary-kayne.github.io/student-finance-tracker
 
 
 ## Chosen Theme
 Student Finance Tracker
 
 
-## Features
+# Features
 - Add, edit, and delete transactions
 - Categories: Food, Books, Transport, Entertainment, Fees, Other (+ custom)
 - Dashboard with total spent, top category, budget remaining, 7-day chart
