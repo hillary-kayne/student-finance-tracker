@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SaveStudent — Tests</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; max-width: 700px; margin: 2rem auto; padding: 0 1rem; background: #f9f9f9; color: #1a1a1a; }
+    h1 { color: #E8312A; margin-bottom: 0.25rem; }
+    p.sub { color: #666; margin-bottom: 2rem; font-size: 0.9rem; }
+    .suite { margin-bottom: 2rem; }
+    .suite h2 { font-size: 1rem; font-weight: 700; border-bottom: 2px solid #E8312A; padding-bottom: 0.3rem; margin-bottom: 0.75rem; }
+    .test { display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0.75rem; border-radius: 6px; margin-bottom: 0.4rem; font-size: 0.88rem; }
+    .test.pass { background: #e8f8ef; }
+    .test.fail { background: #fff0f0; }
+    .badge { font-weight: 700; font-size: 0.8rem; min-width: 42px; text-align: center; padding: 0.15rem 0.4rem; border-radius: 4px; }
+    .pass .badge { background: #2a9d5c; color: #fff; }
+    .fail .badge { background: #E8312A; color: #fff; }
+    #summary { margin-top: 1.5rem; font-weight: 700; font-size: 1rem; padding: 0.75rem 1rem; border-radius: 8px; }
+    .all-pass { background: #e8f8ef; color: #2a9d5c; }
+    .some-fail { background: #fff0f0; color: #E8312A; }
+  </style>
+</head>
+<body>
+  <h1>SaveStudent — Regex Test Suite</h1>
+  <p class="sub">These tests verify all validation rules used in the app. Open this file in Live Server to run.</p>
+  <div id="output"></div>
+  <div id="summary"></div>
+
+  <script type="module">
+    import { validateDescription, validateAmount, validateDate, validateCategory, validateNewCategory } from './scripts/validators.js';
+
+    const results = [];
+
+    function test(suite, label, fn) {
+      try {
+        const passed = fn();
+        results.push({ suite, label, passed });
+      } catch(e) {
+        results.push({ suite, label, passed: false, error: e.message });
+      }
+    }
+
+    function expect(val) {
+      return {
+        toBe: (expected) => val === expected,
+        toBeTruthy: () => !!val,
+        toBeFalsy: () => !val,
+      };
+    }
+
+    // ── Description tests ──────────────────────────
+    test('Description Validation', 'Accepts normal text', () =>
+      expect(validateDescription('Lunch at cafeteria')).toBe(''));
+    test('Description Validation', 'Rejects empty string', () =>
+      expect(validateDescription('')).toBeTruthy());
+    test('Description Validation', 'Rejects leading space', () =>
+      expect(validateDescription(' Lunch')).toBeTruthy());
+    test('Description Validation', 'Rejects trailing space', () =>
+      expect(validateDescription('Lunch ')).toBeTruthy());
+    test('Description Validation', 'Rejects double spaces', () =>
+      expect(validateDescription('Lunch  at')).toBeTruthy());
+    test('Description Validation', 'ADVANCED: Rejects duplicate word (the the)', () =>
+      expect(validateDescription('I went to the the shop')).toBeTruthy());
+    test('Description Validation', 'Accepts single character', () =>
+      expect(validateDescription('X')).toBe(''));
+
+    // ── Amount tests ───────────────────────────────
+    test('Amount Validation', 'Accepts whole number', () =>
+      expect(validateAmount('45')).toBe(''));
+    test('Amount Validation', 'Accepts decimal e.g. 12.50', () =>
+      expect(validateAmount('12.50')).toBe(''));
+    test('Amount Validation', 'Rejects letters', () =>
+      expect(validateAmount('abc')).toBeTruthy());
+    test('Amount Validation', 'Rejects more than 2 decimals', () =>
+      expect(validateAmount('12.500')).toBeTruthy());
+    test('Amount Validation', 'Rejects negative number', () =>
+      expect(validateAmount('-5')).toBeTruthy());
+    test('Amount Validation', 'Rejects zero', () =>
+      expect(validateAmount('0')).toBeTruthy());
+    test('Amount Validation', 'Rejects empty', () =>
+      expect(validateAmount('')).toBeTruthy());
+
+    // ── Date tests ─────────────────────────────────
+    test('Date Validation', 'Accepts valid date 2025-09-25', () =>
+      expect(validateDate('2025-09-25')).toBe(''));
+    test('Date Validation', 'Rejects wrong format DD/MM/YYYY', () =>
+      expect(validateDate('25/09/2025')).toBeTruthy());
+    test('Date Validation', 'Rejects invalid month 13', () =>
+      expect(validateDate('2025-13-01')).toBeTruthy());
+    test('Date Validation', 'Rejects invalid day 00', () =>
+      expect(validateDate('2025-09-00')).toBeTruthy());
+    test('Date Validation', 'Rejects empty', () =>
+      expect(validateDate('')).toBeTruthy());
+
+    // ── Category tests ─────────────────────────────
+    test('Category Validation', 'Accepts Food', () =>
+      expect(validateCategory('Food')).toBe(''));
+    test('Category Validation', 'Accepts hyphenated e.g. Self-Care', () =>
+      expect(validateCategory('Self-Care')).toBe(''));
+    test('Category Validation', 'Rejects numbers in category', () =>
+      expect(validateCategory('Food2')).toBeTruthy());
+    test('Category Validation', 'Rejects empty', () =>
+      expect(validateCategory('')).toBeTruthy());
+    test('Category Validation', 'Rejects special characters', () =>
+      expect(validateCategory('Food@')).toBeTruthy());
+
+    // ── New category tests ─────────────────────────
+    test('New Category Validation', 'Accepts Health', () =>
+      expect(validateNewCategory('Health')).toBe(''));
+    test('New Category Validation', 'Rejects blank', () =>
+      expect(validateNewCategory('')).toBeTruthy());
+    test('New Category Validation', 'Rejects numbers', () =>
+      expect(validateNewCategory('Cat1')).toBeTruthy());
+
+    // ── Advanced regex tests ───────────────────────
+    test('Advanced Regex', 'Duplicate word caught: "the the"', () => {
+      const re = /\b(\w+)\s+\1\b/i;
+      return expect(re.test('the the shop')).toBe(true);
+    });
+    test('Advanced Regex', 'No duplicate in normal sentence', () => {
+      const re = /\b(\w+)\s+\1\b/i;
+      return expect(re.test('lunch at cafeteria')).toBe(false);
+    });
+    test('Advanced Regex', 'Amount lookahead: cents present e.g. 12.50', () => {
+      const re = /^(0|[1-9]\d*)(?=\.\d{1,2}$)\d*\.\d{1,2}$/;
+      return expect(re.test('12.50')).toBe(true);
+    });
+    test('Advanced Regex', 'Amount lookahead: rejects no cents 12.', () => {
+      const re = /^(0|[1-9]\d*)(\.\d{1,2})?$/;
+      return expect(re.test('12.')).toBe(false);
+    });
+
+    // ── Render results ─────────────────────────────
+    const output = document.getElementById('output');
+    const suites = {};
+    results.forEach(r => {
+      if (!suites[r.suite]) suites[r.suite] = [];
+      suites[r.suite].push(r);
+    });
+
+    Object.entries(suites).forEach(([name, tests]) => {
+      const div = document.createElement('div');
+      div.className = 'suite';
+      div.innerHTML = `<h2>${name}</h2>` +
+        tests.map(t => `
+          <div class="test ${t.passed ? 'pass' : 'fail'}">
+            <span class="badge">${t.passed ? 'PASS' : 'FAIL'}</span>
+            <span>${t.label}</span>
+          </div>
+        `).join('');
+      output.appendChild(div);
+    });
+
+    const total = results.length;
+    const passed = results.filter(r => r.passed).length;
+    const summary = document.getElementById('summary');
+    summary.textContent = `${passed} / ${total} tests passed`;
+    summary.className = passed === total ? 'all-pass' : 'some-fail';
+  </script>
+</body>
+</html>
