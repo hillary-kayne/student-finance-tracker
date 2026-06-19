@@ -1,4 +1,4 @@
-# 👋 Welcome to SaveStudent
+# Welcome to SaveStudent
 
 Hey! This is **SaveStudent** — a simple money tracker I built as an ALU student, 
 for ALU students. No complicated finance stuff. Just a clean, easy way to see 
