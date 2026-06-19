@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Save Student — Track Your Money</title>
+  <link rel="stylesheet" href="styles/main.css" />
+</head>
+<body>
+
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="#about" class="logo">Save<span class="accent">Student</span></a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <ul>
+          <li><a href="#about"           class="nav-link">About</a></li>
+          <li><a href="#dashboard"       class="nav-link">Dashboard</a></li>
+          <li><a href="#transactions"    class="nav-link">Transactions</a></li>
+          <li><a href="#add-transaction" class="nav-link nav-link--cta">+ Add</a></li>
+          <li><a href="#settings"        class="nav-link">Settings</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main-content">
+
+<!-- ABOUT / HERO -->
+    <section id="about" class="hero" aria-labelledby="about-heading">
+      <div class="container">
+        <p class="hero-greeting">Hello, Friend! </p>
+        <h1 id="about-heading">Welcome to <span>SaveStudent!</span></h1>
+        <p class="hero-sub">Buddy, you don't need a finance degree! Just add what you spent, pick a category, and SaveStudent does the rest! Built by an ALU student, for ALU students.</p>
+        <p class="hero-tagline">Track your money. Save your future.</p>
+        <div class="hero-links">
+          <a href="#add-transaction" class="btn btn--primary">+ Add a transaction</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- DASHBOARD -->
+    <section id="dashboard" class="section" aria-labelledby="dashboard-heading">
+      <div class="container">
+        <h2 id="dashboard-heading" class="section-title">Your <span>Dashboard</span></h2>
+        <p class="section-sub">A quick look at your spending this month.</p>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="stat-label">Total Transactions</span>
+            <span class="stat-value" id="stat-total">0</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Total Spent</span>
+            <span class="stat-value" id="stat-spent">$0.00</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Top Category</span>
+            <span class="stat-value" id="stat-top-cat">—</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Budget Left</span>
+            <span class="stat-value" id="stat-remaining">—</span>
+          </div>
+        </div>
+
+        <div class="budget-cap-row">
+          <label for="budget-cap">Set monthly budget ($)</label>
+          <input type="number" id="budget-cap" placeholder="e.g. 200" min="0" style="width:130px;padding:0.5rem 0.75rem;border:1.5px solid #d97c20;border-radius:6px;font-size:0.95rem;" />
+          <button id="set-budget-btn" class="btn btn--orange">Set</button>
+        </div>
+
+        <div id="budget-alert" role="status" aria-live="polite" class="budget-alert hidden"></div>
+
+        <div class="chart-section">
+          <h3>Spending — Last 7 Days</h3>
+          <div class="bar-chart" id="bar-chart" aria-label="Bar chart of spending over last 7 days"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRANSACTIONS -->
+    <section id="transactions" class="section section--alt" aria-labelledby="transactions-heading">
+      <div class="container">
+        <h2 id="transactions-heading" class="section-title">Your <span>Transactions</span></h2>
+        <p class="section-sub">Search, sort, and manage all your spending records.</p>
+
+        <div class="table-controls">
+          <div class="search-wrap">
+            <label for="search-input" class="sr-only">Search transactions</label>
+            <input type="text" id="search-input" placeholder="Search your transactions..." autocomplete="off" />
+          </div>
+          <div class="sort-wrap">
+            <label for="sort-select" class="sr-only">Sort by</label>
+            <select id="sort-select">
+              <option value="date-desc">Latest transactions first</option>
+              <option value="date-asc">Oldest transactions first</option>
+              <option value="desc-asc">Name A → Z</option>
+              <option value="desc-desc">Name Z → A</option>
+              <option value="amount-asc">Lowest amount first</option>
+              <option value="amount-desc">Highest amount first</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="search-status" role="status" aria-live="polite" class="sr-only"></div>
+
+        <div class="table-wrap">
+          <table class="transactions-table" aria-label="Transactions list">
+            <thead>
+              <tr>
+                <th scope="col">Description</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Category</th>
+                <th scope="col">Date</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="transactions-body"></tbody>
+          </table>
+          <p id="empty-state" class="empty-state hidden">No transactions yet — add your first one below!</p>
+        </div>
+
+        <div class="import-export">
+          <button id="export-btn" class="btn btn--outline">Download my transactions</button>
+          <label class="btn btn--outline" for="import-input">
+            Load saved transactions
+            <input type="file" id="import-input" accept=".json" class="sr-only" />
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <!-- ADD / EDIT FORM -->
+    <section id="add-transaction" aria-labelledby="form-heading">
+      <div class="container" style="padding-top:2.5rem;padding-bottom:2.5rem;">
+        <h2 id="form-heading" class="section-title">Add a <span>Transaction</span></h2>
+        <p class="section-sub">Fill in the details below and hit save.</p>
+
+        <form id="transaction-form" novalidate style="max-width:520px;">
+          <input type="hidden" id="edit-id" />
+
+          <div class="form-group">
+            <label for="f-description">What did you spend on? *</label>
+            <input type="text" id="f-description" required autocomplete="off" placeholder="e.g. Lunch at cafeteria" />
+            <span class="field-error" id="err-description" role="alert" aria-live="assertive"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="f-amount">How much? ($) *</label>
+            <input type="text" id="f-amount" required placeholder="e.g. 12.50" />
+            <span class="field-error" id="err-amount" role="alert" aria-live="assertive"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="f-category">Category *</label>
+            <select id="f-category" required>
+              <option value="">Pick a category</option>
+              <option value="Food">Food</option>
+              <option value="Books">Books</option>
+              <option value="Transport">Transport</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Fees">Fees</option>
+              <option value="Other">Other</option>
+            </select>
+            <span class="field-error" id="err-category" role="alert" aria-live="assertive"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="f-date">Date *</label>
+            <input type="date" id="f-date" required />
+            <span class="field-error" id="err-date" role="alert" aria-live="assertive"></span>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn--primary" id="form-submit-btn">Save Transaction</button>
+            <button type="button" class="btn btn--ghost hidden" id="form-cancel-btn">Cancel</button>
+          </div>
+
+          <div id="form-status" role="status" aria-live="polite" class="form-status"></div>
+        </form>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section id="settings" class="section section--alt" aria-labelledby="settings-heading">
+      <div class="container">
+        <h2 id="settings-heading" class="section-title"><span>Settings</span></h2>
+        <p class="section-sub">Adjust currencies, categories, and more.</p>
+
+        <div class="settings-group">
+          <h3>Currency Rates</h3>
+          <p class="settings-desc">Base currency is USD. If you spend in other currencies like RWF (Rwandan Franc) or EUR (Euro), set the exchange rate below so the app can convert amounts for you. For example, if 1 USD = 1,300 RWF, type 1300 in the RWF field. You update these manually — no internet needed.</p>
+          <div class="form-group" style="max-width:300px;">
+            <label for="rate-eur">USD → EUR</label>
+            <input type="text" id="rate-eur" placeholder="e.g. 0.92" />
+          </div>
+          <div class="form-group" style="max-width:300px;">
+            <label for="rate-rwf">USD → RWF</label>
+            <input type="text" id="rate-rwf" placeholder="e.g. 1300" />
+          </div>
+          <button id="save-rates-btn" class="btn btn--primary">Save Rates</button>
+          <div id="rates-status" role="status" aria-live="polite" class="form-status"></div>
+          <p class="diversity-note"> SaveStudent is built for students across Africa and the world — whether you spend in RWF, KES, GHS, NGN, or USD, you belong here.</p>
+        </div>
+
+        <div class="settings-group">
+          <h3>Custom Categories</h3>
+          <p class="settings-desc">Add your own spending categories.</p>
+          <div class="form-group" style="max-width:300px;">
+            <label for="new-category">New category name</label>
+            <input type="text" id="new-category" placeholder="e.g. Health" />
+            <span class="field-error" id="err-new-category" role="alert" aria-live="assertive"></span>
+          </div>
+          <button id="add-category-btn" class="btn btn--primary">Add Category</button>
+          <ul id="category-list" class="category-list" aria-label="Custom categories"></ul>
+        </div>
+
+        <div class="settings-group danger-zone">
+          <h3>Danger Zone</h3>
+          <p class="settings-desc">This will delete all your transactions and reset everything.</p>
+          <button id="clear-data-btn" class="btn btn--danger">Clear All Data</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>Built by Hillary for ALU</p>
+    </div>
+  </footer>
+
+  <!-- Delete confirm modal -->
+  <div id="delete-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-box">
+      <h3 id="modal-title">Delete this transaction?</h3>
+      <p>Once deleted, it's gone for good.</p>
+      <div class="modal-actions">
+        <button id="modal-confirm" class="btn btn--danger">Yes, delete</button>
+        <button id="modal-cancel" class="btn btn--ghost">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="scripts/app.js"></script>
+</body>
+</html>
