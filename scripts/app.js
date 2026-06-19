@@ -1,6 +1,7 @@
 // app.js — main controller, wires everything together
 
 import { state } from './state.js';
+import { storage } from './storage.js';
 import { renderTransactions, renderStats, renderChart, renderCategoryOptions, renderCategoryList, showError, resetForm } from './ui.js';
 import { validateDescription, validateAmount, validateDate, validateCategory, validateNewCategory, validateImportRecord } from './validators.js';
 import { compileRegex, filterTransactions } from './search.js';
@@ -20,6 +21,12 @@ function refresh() {
 }
 
 refresh();
+
+// Load saved budget into input on page load
+const savedBudget = state.budget;
+if (savedBudget) {
+  document.getElementById('budget-cap').value = savedBudget;
+}
 
 // ── Nav toggle (mobile) ─────────────────────────────────
 const header = document.querySelector('.site-header');
@@ -115,3 +122,13 @@ const encouragements = [
     });
     document.getElementById('form-status').textContent = `Saved! ${msg}`;
   }
+// Close modal with Escape key
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    const modal = document.getElementById('delete-modal');
+    if (!modal.classList.contains('hidden')) {
+      pendingDeleteId = null;
+      modal.classList.add('hidden');
+    }
+  }
+});
