@@ -150,4 +150,4 @@ probably keep using it myself.
 
 *Thank You!*
 
-This is the link to my GitHub Repo: 
+This is the link to my GitHub Repo: https://github.com/hillary-kayne/student-finance-tracker/tree/main 
