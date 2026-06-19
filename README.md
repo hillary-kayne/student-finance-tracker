@@ -5,12 +5,10 @@ Track your spending, set a monthly budget, and stay in control of your money.
 
 **Live site:** https://hillary-kayne.github.io/student-finance-tracker
 
----
 
 ## Chosen Theme
 Student Finance Tracker
 
----
 
 ## Features
 - Add, edit, and delete transactions
@@ -26,7 +24,6 @@ Student Finance Tracker
 - ARIA live regions for screen readers
 - "Do Hard Things" encouragement on every save
 
----
 
 ## Regex Catalog
 
@@ -40,7 +37,6 @@ Student Finance Tracker
 | Category | `/^[A-Za-z]+(?:[ -][A-Za-z]+)*$/` | "Self-Care" | "Food2", "Food@" |
 | Amount lookahead | `/^(0\|[1-9]\d*)(?=\.\d{1,2}$)/` | "12.50" | "12." |
 
----
 
 ## Keyboard Map
 
@@ -51,7 +47,6 @@ Student Finance Tracker
 | Escape | Close delete modal |
 | Skip link (Tab on load) | Jump straight to main content |
 
----
 
 ## Accessibility Notes
 - Semantic landmarks: `header`, `nav`, `main`, `section`, `footer`
@@ -63,7 +58,6 @@ Student Finance Tracker
 - Delete modal uses `role="dialog"` and `aria-modal="true"`
 - Color contrast meets WCAG AA
 
----
 
 ## How to Run Tests
 1. Open the project in VS Code
@@ -74,11 +68,7 @@ Student Finance Tracker
 1. Right-click `index.html` → Open with Live Server
 2. Or visit the live GitHub Pages URL above
 
----
 
 ## Seed Data
 Import `seed.json` using the "Load saved transactions" button to load 12 sample records including edge cases (large amounts, small amounts, varied dates).
 
----
-
-Built by Hillary — ALU Software Engineering, 2025
