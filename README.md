@@ -1,73 +1,106 @@
-# SaveStudent — Student Finance Tracker
+# 👋 Welcome to SaveStudent
 
-A simple, accessible budget tracker built for ALU students.
-Track your spending, set a monthly budget, and stay in control of your money.
-
-
-
-## Chosen Theme
-Student Finance Tracker
+Hey! This is **SaveStudent** — a simple money tracker I built as an ALU student, 
+for ALU students. No complicated finance stuff. Just a clean, easy way to see 
+where your money is going every month.
 
 
-## Features
-- Add, edit, and delete transactions
-- Categories: Food, Books, Transport, Entertainment, Fees, Other (+ custom)
-- Dashboard with total spent, top category, budget remaining, 7-day chart
-- Monthly budget cap with live over/under alert
-- Search transactions with live regex matching and highlighted results
-- Sort by date, name, or amount
-- Download and load transactions (JSON)
-- Currency settings: USD → EUR and USD → RWF manual rates
-- Fully keyboard navigable
-- Mobile-first responsive design (360px, 768px, 1024px)
-- ARIA live regions for screen readers
-- "Do Hard Things" encouragement on every save
+## What does this app actually do?
+
+Ever get to the end of the month and wonder where all your money went? 
+That's exactly what SaveStudent helps you figure out.
+
+Here's what you can do with it:
+
+- **Add a transaction** — type what you spent, how much, and which category it falls under
+- **See your dashboard** — instantly see your total spending, top category, and how much budget you have left
+- **Set a monthly budget** — the app tells you when you're getting close to your limit
+- **Search your spending** — type anything and it finds it instantly
+- **Sort your transactions** — by date, name, or amount
+- **Download your data** — save all your transactions as a file
+- **Load it back** — pick up right where you left off
+- **Add custom categories** — not just Food and Books, make it yours
+- **Set currency rates** — works in USD, EUR, and RWF
 
 
-## Regex Catalog
+## How do I run it?
 
-| Rule | Pattern | Example match | Example reject |
-|---|---|---|---|
-| Description | `/^\S(?:.*\S)?$/` | "Lunch at cafe" | " Lunch" (leading space) |
-| No double spaces | `/\s{2,}/` | — | "Lunch  at" |
-| Duplicate word (advanced) | `/\b(\w+)\s+\1\b/i` | "the the shop" | "the shop" |
-| Amount | `/^(0\|[1-9]\d*)(\.\d{1,2})?$/` | "12.50", "5" | "12.500", "-5" |
-| Date | `/^\d{4}-(0[1-9]\|1[0-2])-(0[1-9]\|[12]\d\|3[01])$/` | "2025-09-25" | "25/09/2025" |
-| Category | `/^[A-Za-z]+(?:[ -][A-Za-z]+)*$/` | "Self-Care" | "Food2", "Food@" |
-| Amount lookahead | `/^(0\|[1-9]\d*)(?=\.\d{1,2}$)/` | "12.50" | "12." |
+**Option 1 — Visit the live site:**
+Just click the link at the top. Nothing to install.
+
+**Option 2 — Run it locally:**
+1. Download or clone this repo
+2. Open the folder in VS Code
+3. Right-click `index.html` → click **Open with Live Server**
+4. Done. It opens in your browser automatically.
 
 
-## Keyboard Map
+## How do I run the tests?
 
-| Key | Action |
+1. Open the folder in VS Code
+2. Right-click `tests.html` → click **Open with Live Server**
+3. You'll see a list of every test and whether it passed or failed
+4. All 30+ tests should show **PASS** in green
+
+The tests check all the validation rules — like making sure you can't 
+type letters in the amount field, or leave the description blank.
+
+
+## Want to try it with sample data?
+
+There's a file called `seed.json` in this repo. It has 12 example transactions 
+already filled in — different categories, different amounts, edge cases and all.
+
+To load it:
+1. Open the app
+2. Go to the Transactions section
+3. Click **Load saved transactions**
+4. Pick the `seed.json` file
+5. Your table fills up instantly!
+
+
+## How does the search work?
+
+Just type anything in the search box and it searches your transactions in real time. 
+It matches against the description and the category.
+
+It also supports **regex** — which is a fancy way of saying you can use special 
+search patterns. Here are some fun ones to try:
+
+| What you want to find | Type this |
 |---|---|
-| Tab | Move between fields and buttons |
-| Enter | Submit form / confirm action |
-| Escape | Close delete modal |
-| Skip link (Tab on load) | Jump straight to main content |
+| Anything with "coffee" or "tea" | `(coffee\|tea)` |
+| Amounts with cents | `\.\d{2}` |
+| Entries starting with "Bus" | `^Bus` |
+| Duplicate words by accident | `\b(\w+)\s+\1\b` |
+
+Don't worry if that looks confusing — normal typing works perfectly fine too.
 
 
-## Accessibility Notes
-- Semantic landmarks: `header`, `nav`, `main`, `section`, `footer`
-- All form inputs have associated `<label>` elements
-- Errors announced via `role="alert"` and `aria-live="assertive"`
-- Budget alerts use `aria-live="polite"` (under budget) and `aria-live="assertive"` (over budget)
-- Skip-to-content link appears on first Tab press
-- Visible focus styles on all interactive elements
-- Delete modal uses `role="dialog"` and `aria-modal="true"`
-- Color contrast meets WCAG AA
+## Validation Rules (the nerdy bit)
+
+Every time you fill in the form, the app checks your input before saving. 
+Here's what it's checking and why:
+
+| Field | What's checked | Example of what's rejected |
+|---|---|---|
+| Description | No leading/trailing spaces, no double spaces, no duplicate words | " Lunch" or "the the cafe" |
+| Amount | Numbers only, max 2 decimal places, must be more than 0 | "abc", "-5", "12.500" |
+| Date | Must be in YYYY-MM-DD format | "25/09/2025" |
+| Category | Letters only, spaces and hyphens allowed | "Food2", "Food@" |
+
+The trickiest one is the **duplicate word check** — it uses an advanced regex 
+pattern called a back-reference: `/\b(\w+)\s+\1\b/i`
+
+What that means in plain English: "find any word that appears twice in a row." 
+So if you accidentally type "I went to the the shop" — it catches it.
 
 
-## How to Run Tests
-1. Open the project in VS Code
-2. Right-click `tests.html` → Open with Live Server
-3. All test results show as PASS or FAIL on screen
+## Can I use it without a mouse?
 
-## How to Run the App
-1. Right-click `index.html` → Open with Live Server
-2. Or visit the live GitHub Pages URL above
+Yes! Everything works with just your keyboard:
 
-
-## Seed Data
-Import `seed.json` using the "Load saved transactions" button to load 12 sample records including edge cases (large amounts, small amounts, varied dates).
-
+| Key | What it does |
+|---|---|
+| `Tab` | Move between buttons and fields |
+| `Enter` | Submit the form or confirm an
