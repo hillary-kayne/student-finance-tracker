@@ -5,7 +5,6 @@ for ALU students. No complicated finance stuff. Just a clean, easy way to see
 where your money is going every month.
 
 
----
 
 ## What does this app actually do?
 
@@ -24,7 +23,6 @@ Here's what you can do with it:
 - **Add custom categories** — not just Food and Books, make it yours
 - **Set currency rates** — works in USD, EUR, and RWF
 
----
 
 ## How do I run it?
 
@@ -37,7 +35,6 @@ Just click the link at the top. Nothing to install.
 3. Right-click `index.html` → click **Open with Live Server**
 4. Done. It opens in your browser automatically.
 
----
 
 ## How do I run the tests?
 
@@ -49,7 +46,6 @@ Just click the link at the top. Nothing to install.
 The tests check all the validation rules — like making sure you can't 
 type letters in the amount field, or leave the description blank.
 
----
 
 ## Want to try it with sample data?
 
@@ -63,7 +59,6 @@ To load it:
 4. Pick the `seed.json` file
 5. Your table fills up instantly!
 
----
 
 ## How does the search work?
 
@@ -82,7 +77,6 @@ search patterns. Here are some fun ones to try:
 
 Don't worry if that looks confusing — normal typing works perfectly fine too.
 
----
 
 ## Validation Rules (the nerdy bit)
 
@@ -102,7 +96,6 @@ pattern called a back-reference: `/\b(\w+)\s+\1\b/i`
 What that means in plain English: "find any word that appears twice in a row." 
 So if you accidentally type "I went to the the shop" — it catches it.
 
----
 
 ## Can I use it without a mouse?
 
@@ -115,7 +108,6 @@ Yes! Everything works with just your keyboard:
 | `Escape` | Close the delete popup |
 | `Tab` on first load | Jumps you straight to the main content (skip link) |
 
----
 
 ## Accessibility
 
@@ -129,7 +121,6 @@ screen readers or keyboard-only navigation. Here's what's built in:
 - Color contrast passes WCAG AA standards throughout
 - There's a skip link so keyboard users can jump past the nav instantly
 
----
 
 ## What's the currency thing about?
 
@@ -139,7 +130,6 @@ EUR (Euros), you can set your own exchange rates in Settings.
 For example — if today 1 USD = 1,300 RWF, just type 1300 in the RWF field 
 and save. No internet needed, no live API — you control the rates yourself.
 
----
 
 ## Here's a little of my take on diversity in SaveStudent
 
@@ -147,7 +137,6 @@ SaveStudent was built with all ALU students in mind — whether you're from
 Rwanda, Nigeria, Ghana, Kenya, or anywhere else on the continent. 
 Your currency, your categories, your spending — this app works for you.
 
----
 
 ## About Me
 
@@ -158,7 +147,6 @@ probably keep using it myself.
 - GitHub: [hillary-kayne](https://github.com/hillary-kayne)
 - Email: h.kayinabab@alustudent.com
 
----
 
 *Thank You!*
 
